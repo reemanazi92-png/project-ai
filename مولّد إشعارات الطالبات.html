@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مولّد إشعارات الطالبات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4f1;--card:#fff;--tx:#2a2a2e;--mu:#6b6b73;--bd:#e2ded8;--ac:#7a2e5b;--ac2:#fff;--soft:#f3e8ef;--warn:#9a4a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161a;--card:#222126;--tx:#f0eef2;--mu:#a5a2ad;--bd:#38363e;--ac:#d98bb9;--ac2:#1d1220;--soft:#2f2230;--warn:#f0b36b}}
+:root[data-theme="dark"]{--bg:#17161a;--card:#222126;--tx:#f0eef2;--mu:#a5a2ad;--bd:#38363e;--ac:#d98bb9;--ac2:#1d1220;--soft:#2f2230;--warn:#f0b36b}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Tajawal',Tahoma,sans-serif;line-height:1.7}
+.wrap{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px}
+.sub{color:var(--mu);margin:0 0 20px}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:820px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}
+label{display:block;font-weight:700;font-size:.92rem;margin:12px 0 4px}
+label:first-child{margin-top:0}
+input,textarea,select{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:9px 11px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--ac);outline-offset:1px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{flex:1;font:inherit;padding:9px 6px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);cursor:pointer}
+.seg button.on{background:var(--ac);color:var(--ac2);border-color:var(--ac);font-weight:700}
+.tabs button{font-size:.85rem;line-height:1.4}
+#out{min-height:380px;line-height:1.9;resize:vertical;background:var(--soft)}
+.when{background:var(--soft);border-radius:10px;padding:8px 12px;margin:10px 0;font-size:.92rem}
+.when.late{color:var(--warn);font-weight:700}
+.btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;padding:10px 16px;border-radius:10px;border:1px solid var(--ac);background:var(--ac);color:var(--ac2);cursor:pointer;flex:1;min-width:140px}
+.btn.alt{background:transparent;color:var(--ac)}
+.hint{font-size:.82rem;color:var(--mu);margin-top:8px}
+#exam{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>مولّد إشعارات وتذكيرات الطالبات</h1>
+  <p class="sub">عبّي الحقول مرة وحدة، ويتجهز لك الإشعار وتذكيريه بمواعيد إرسالها.</p>
+  <div class="grid">
+    <div class="card">
+      <label>نوع الإشعار</label>
+      <div class="seg" id="types">
+        <button type="button" data-t="assign" class="on">تكليف</button>
+        <button type="button" data-t="part">مشاركة</button>
+        <button type="button" data-t="exam">اختبار</button>
+      </div>
+
+      <label for="course">اسم المقرر</label>
+      <input id="course" placeholder="مثال: مهارات التواصل الفعّال">
+
+      <div class="row">
+        <div><label for="d1">تاريخ الإتاحة (البدء)</label><input id="d1" type="date"></div>
+        <div><label for="d2">تاريخ الإغلاق (الانتهاء)</label><input id="d2" type="date"></div>
+      </div>
+      <div class="row">
+        <div><label for="t2">وقت الإغلاق (اختياري)</label><input id="t2" type="time"></div>
+        <div><label for="ex">طريقة التسليم</label>
+          <select id="ex"><option value="">بدون</option><option>عبر المنصة</option><option>عبر البريد الإلكتروني</option><option>داخل القاعة</option></select></div>
+      </div>
+
+      <div id="exam">
+        <label for="part">جزئية الاختبار</label>
+        <textarea id="part" rows="2" placeholder="مثال: الوحدة الأولى إلى الثالثة"></textarea>
+      </div>
+
+      <label for="refs">المراجع المخصصة للمذاكرة (كل مرجع في سطر)</label>
+      <textarea id="refs" rows="4" placeholder="الكتاب المقرر – الفصل الثاني&#10;ملف العرض التقديمي للمحاضرة الثالثة"></textarea>
+
+      <label for="tr">اسم المدربة</label>
+      <input id="tr" placeholder="اسم المدربة">
+
+    </div>
+
+    <div class="card">
+      <label>اختاري الرسالة</label>
+      <div class="seg tabs" id="kinds">
+        <button type="button" data-k="main" class="on">الإشعار الأساسي</button>
+        <button type="button" data-k="r1">تذكير قبل الإتاحة بيوم</button>
+        <button type="button" data-k="r2">تذكير قبل الإغلاق بيومين</button>
+      </div>
+      <div class="when" id="when"></div>
+
+      <textarea id="out" rows="16" aria-label="نص الرسالة"></textarea>
+
+      <div class="btns"><button class="btn" id="copy" type="button">نسخ النص</button></div>
+      <div class="hint" id="msg">أي تغيير في الحقول يحدّث النص ويلغي تعديلك اليدوي.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var ACADEMY = 'أكاديمية التعلم';
+var type = 'assign', kind = 'main';
+var $ = function(id){return document.getElementById(id)};
+var T = {
+  assign:{head:'📌 تذكير بموعد تسليم التكليف', r1:'⏳ تذكير: يُتاح التكليف غدًا', r2:'⏳ تذكير: يتبقى يومان على إغلاق التكليف', s:'📅 بداية التكليف', e:'⏰ آخر موعد للتسليم', close:'نأمل الالتزام بالموعد المحدد، وعدم تأخير التسليم.', sub:'تكليف'},
+  part:{head:'📌 إشعار بخصوص المشاركة', r1:'⏳ تذكير: تُفتح المشاركة غدًا', r2:'⏳ تذكير: يتبقى يومان على إغلاق المشاركة', s:'📅 بداية فتح المشاركة', e:'⏰ نهاية موعد المشاركة', close:'نتطلع لمشاركاتكن المميزة وتفاعلكن الإيجابي.', sub:'مشاركة'},
+  exam:{head:'📌 إشعار بموعد الاختبار', r1:'⏳ تذكير: يبدأ الاختبار غدًا', r2:'⏳ تذكير: يتبقى يومان على انتهاء الاختبار', s:'📅 بداية الاختبار', e:'⏰ نهاية الاختبار', close:'نسأل الله لكن التوفيق والنجاح، ونأمل الاستعداد الجيد.', sub:'اختبار'}
+};
+function parse(v){ return v ? new Date(v + 'T12:00:00') : null; }
+function shift(d, n){ if(!d) return null; var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+function fmtD(d){
+  if(!d) return '';
+  try { return d.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn', {weekday:'long', day:'numeric', month:'long', year:'numeric'}); }
+  catch(e){ return d.toDateString(); }
+}
+function fmtTime(v){
+  if(!v) return '';
+  var p = v.split(':'), h = +p[0], m = p[1], suf = h >= 12 ? 'مساءً' : 'صباحًا';
+  h = h % 12; if(h === 0) h = 12;
+  return h + ':' + m + ' ' + suf;
+}
+function sendDate(){
+  if(kind === 'r1') return shift(parse($('d1').value), -1);
+  if(kind === 'r2') return shift(parse($('d2').value), -2);
+  return null;
+}
+function course(){ return $('course').value.trim() || '………'; }
+function head(){ return T[type][kind === 'main' ? 'head' : kind]; }
+function build(){
+  var c = T[type];
+  var d1 = fmtD(parse($('d1').value)), d2 = fmtD(parse($('d2').value)), t2 = fmtTime($('t2').value);
+  var L = ['السلام عليكن ورحمة الله وبركاته 🌸', 'عزيزاتي الطالبات،', '', head() + ' لمقرر «' + course() + '»', ''];
+  if(d1) L.push(c.s + ': ' + d1);
+  if(d2) L.push(c.e + ': ' + d2 + (t2 ? ' الساعة ' + t2 : ''));
+  if($('ex').value) L.push('📥 طريقة التسليم: ' + $('ex').value);
+  if(type === 'exam' && $('part').value.trim()){ L.push('', '📝 جزئية الاختبار:', $('part').value.trim()); }
+  var refs = $('refs').value.split('\n').map(function(x){return x.trim()}).filter(Boolean);
+  if(refs.length){ L.push('', '📚 المراجع المخصصة للمذاكرة:'); refs.forEach(function(r){ L.push('▪️ ' + r); }); }
+  L.push('', c.close, '', 'مع خالص التقدير،', 'المدربة: ' + ($('tr').value.trim() || '………'), ACADEMY);
+  $('out').value = L.join('\n');
+
+  var w = $('when'), sd = sendDate();
+  w.className = 'when';
+  if(kind === 'main'){ w.textContent = '📤 يُرسل هذا الإشعار فور تجهيزه.'; }
+  else if(!sd){ w.textContent = '📤 حددي التاريخ ليظهر موعد إرسال هذا التذكير.'; }
+  else {
+    var today = new Date(); today.setHours(12,0,0,0);
+    w.textContent = '📤 موعد إرسال هذا التذكير: ' + fmtD(sd);
+    if(sd < today){ w.textContent += ' (الموعد مضى، أرسليه الآن أو عدّلي التواريخ)'; w.className = 'when late'; }
+  }
+  try { localStorage.setItem('ntf2', JSON.stringify({tr:$('tr').value})); } catch(e){}
+}
+function seg(sel, attr, fn){
+  document.querySelectorAll(sel + ' button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll(sel + ' button').forEach(function(x){x.classList.toggle('on', x === b)});
+      fn(b.dataset[attr]);
+    });
+  });
+}
+seg('#types', 't', function(v){ type = v; $('exam').style.display = v === 'exam' ? 'block' : 'none'; build(); });
+seg('#kinds', 'k', function(v){ kind = v; build(); });
+['course','d1','d2','t2','ex','part','refs','tr'].forEach(function(id){
+  $(id).addEventListener('input', build);
+  $(id).addEventListener('change', build);
+});
+$('copy').addEventListener('click', function(){
+  var done = function(){ $('msg').textContent = 'تم نسخ النص ✓'; };
+  try { navigator.clipboard.writeText($('out').value).then(done, function(){ $('out').select(); document.execCommand('copy'); done(); }); }
+  catch(e){ $('out').select(); document.execCommand('copy'); done(); }
+});
+try {
+  var s = JSON.parse(localStorage.getItem('ntf2') || 'null');
+  if(s){ $('tr').value = s.tr || ''; }
+} catch(e){}
+build();
+</script>
+</body>
+</html>
